@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package com.coralogix.tags.v1;
+
+import "google/protobuf/wrappers.proto";
+
+
+message TagType {
+  google.protobuf.Int64Value id = 1;
+  google.protobuf.StringValue type = 2;
+};

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package com.coralogix.tags.v1;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+import "com/coralogix/tags/v1/tag_type.proto";
+
+message Tag {
+  google.protobuf.Int64Value id = 1;
+  google.protobuf.StringValue text_key = 2;
+  google.protobuf.StringValue text_value = 3;
+
+  google.protobuf.Int64Value company_id = 4;
+  google.protobuf.StringValue tag_status = 5;
+  google.protobuf.StringValue avatar = 6;
+  google.protobuf.Timestamp tag_timestamp = 7;
+  google.protobuf.StringValue application_name = 8;
+  repeated  google.protobuf.StringValue subsystem_name = 9;
+  google.protobuf.Timestamp updated_at = 10;
+  google.protobuf.Timestamp created_at = 11;
+  google.protobuf.Int64Value tag_type_id = 12;
+  TagType tag_type = 13;
+}
