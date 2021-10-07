@@ -1,4 +1,4 @@
-name: tags-api-protobuf
+name: cx-api-tags
 CX_PRODUCT: apis
 deployable_type: library
 code_language: protobuf

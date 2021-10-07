@@ -8,6 +8,7 @@ import "com/coralogix/tags/v1/tag.proto";
 import "google/protobuf/descriptor.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
 
 
 message AuditLogDescription {
@@ -91,8 +92,7 @@ message CreateBitbucketTagRequest {
     Repository repository = 2;
   }
 
-  BitbucketBody body = 4;
-  google.protobuf.StringValue request_body = 5;
+  google.protobuf.Struct body = 4;
 }
 
 message CreateTfsTagRequest {
@@ -116,9 +116,7 @@ message CreateTfsTagRequest {
     google.protobuf.Timestamp created_date = 2;
 
   }
-
-  TfsBody body = 4;
-  google.protobuf.StringValue request_body = 5;
+  google.protobuf.Struct body = 4;
 }
 
 message CreateGitlabTagRequest {
@@ -141,9 +139,7 @@ message CreateGitlabTagRequest {
 
     Project project = 2;
   };
-
-  GitlabBody body = 4;
-  google.protobuf.StringValue request_body = 5;
+  google.protobuf.Struct body = 4;
 }
 
 
