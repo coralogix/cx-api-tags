@@ -6,19 +6,22 @@ import "google/protobuf/wrappers.proto";
 import "google/protobuf/timestamp.proto";
 import "com/coralogix/tags/v1/tag_type.proto";
 
-message Tag {
-  google.protobuf.Int64Value id = 1;
-  google.protobuf.StringValue text_key = 2;
-  google.protobuf.StringValue text_value = 3;
+enum Status {
+  STATUS_UNSPECIFIED = 0;
+  STATUS_SUCCESSFUL = 1;
+}
 
-  google.protobuf.Int64Value company_id = 4;
-  google.protobuf.StringValue tag_status = 5;
-  google.protobuf.StringValue avatar = 6;
-  google.protobuf.Timestamp tag_timestamp = 7;
-  google.protobuf.StringValue application_name = 8;
-  repeated  google.protobuf.StringValue subsystem_name = 9;
+message Tag {
+  google.protobuf.UInt64Value id = 1;
+  google.protobuf.StringValue key = 2;
+  google.protobuf.StringValue name = 3;
+  google.protobuf.UInt32Value company_id = 4;
+  Status status = 5;
+  google.protobuf.StringValue icon_url= 6;
+  google.protobuf.Timestamp timestamp = 7;
+  repeated google.protobuf.StringValue application = 8;
+  repeated  google.protobuf.StringValue subsystem = 9;
   google.protobuf.Timestamp updated_at = 10;
   google.protobuf.Timestamp created_at = 11;
-  google.protobuf.Int64Value tag_type_id = 12;
-  TagType tag_type = 13;
+  TagType type = 13;
 }

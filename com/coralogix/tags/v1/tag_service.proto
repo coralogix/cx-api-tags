@@ -5,160 +5,202 @@ package com.coralogix.tags.v1;
 import "google/protobuf/wrappers.proto";
 
 import "com/coralogix/tags/v1/tag.proto";
+import "com/coralogix/tags/v1/audit_log.proto";
 import "google/protobuf/descriptor.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 
-
-message AuditLogDescription {
-  optional string description = 1;
-}
-
-extend google.protobuf.MethodOptions {
-  optional AuditLogDescription audit_log_description = 5000;
-}
-
-service TagService {
+service TagsService {
   rpc CreateTag(CreateTagRequest) returns (CreateTagResponse) {
     option (audit_log_description).description = "create tag";
     option (google.api.http) = {
-      get: "/api/v1/external/tags/add"
-      additional_bindings {
-        post: "/api/v1/external/tags/"
-        body: "*"
-      }
+      post: "/api/v1/addtag"
+      body: "*",
+      response_body: "tag"
     };
   }
-  rpc CreateBitbucketTag(CreateBitbucketTagRequest) returns (CreateBitbucketTagResponse) {
-    option (audit_log_description).description = "create bitbucket tag";
+
+  rpc GetTags(GetTagsRequest) returns (GetTagsResponse) {
+    option (audit_log_description).description = "get tags";
     option (google.api.http) = {
-      post: "/api/v1/external/bitbucket"
-      body: "body"
+      post: "/api/v1/tag"
+      body: "*"
     };
   }
-  rpc CreateTfsTag(CreateTfsTagRequest) returns (CreateTfsTagResponse) {
-    option (audit_log_description).description = "create bitbucket tag";
+
+  rpc UpdateTag(UpdateTagRequest) returns (UpdateTagResponse) {
+    option (audit_log_description).description = "update tag";
     option (google.api.http) = {
-      post: "/api/v1/external/tfs"
-      body: "body"
+      post: "/api/v1/edittag"
+      body: "tag"
+      response_body: "tag"
     };
   }
-  rpc CreateGitlabTag(CreateGitlabTagRequest) returns (CreateGitlabTagResponse) {
-    option (audit_log_description).description = "create bitbucket tag";
+
+  rpc DeleteTag(DeleteTagRequest) returns (DeleteTagResponse) {
+    option (audit_log_description).description = "delete tag";
     option (google.api.http) = {
-      post: "/api/v1/external/gitlab"
-      body: "body"
+      delete: "/api/v1/deletetag/{id}"
+      response_body: "response"
+    };
+  }
+
+  rpc GetTagSummary(GetTagSummaryRequest) returns (GetTagSummaryResponse) {
+    option (audit_log_description).description = "get tag summary";
+    option (google.api.http) = {
+      post: "/api/v1/tag/summary"
+      body: "*"
+    };
+  }
+
+  rpc GetTagAlerts(GetTagAlertsRequest) returns (GetTagAlertsResponse) {
+    option (audit_log_description).description = "get tag alerts";
+    option (google.api.http) = {
+      post: "/api/v1/tag/alerts"
+      body: "*"
+    };
+  }
+
+  rpc GetTagErrorVolume(GetTagErrorVolumeRequest) returns (GetTagErrorVolumeResponse) {
+    option (audit_log_description).description = "get tag error volume";
+    option (google.api.http) = {
+      post: "/api/v1/tag/error-volume"
+      body: "*"
     };
   }
 }
 
 message CreateTagRequest {
-  google.protobuf.StringValue name = 1;
-  repeated google.protobuf.StringValue application = 2;
-  repeated  google.protobuf.StringValue subsystem = 3;
+  google.protobuf.StringValue key = 1;
+  google.protobuf.StringValue name = 2;
+  google.protobuf.UInt32Value company_id = 3;
   google.protobuf.StringValue icon_url = 4;
+  google.protobuf.Timestamp timestamp = 5;
+  repeated google.protobuf.StringValue application = 8;
+  repeated  google.protobuf.StringValue subsystem = 9;
 }
 
-message CreateBitbucketTagRequest {
-  google.protobuf.StringValue name = 1;
-  repeated google.protobuf.StringValue application = 2;
-  repeated  google.protobuf.StringValue subsystem = 3;
+message GetTagsRequest {
+  message QueryDef {
+    google.protobuf.Timestamp start_date = 1;
+    google.protobuf.Timestamp end_date = 2;
+    google.protobuf.UInt32Value page_index = 3;
+    google.protobuf.UInt32Value page_size = 4;
 
-  message BitbucketBody {
-    message CommitStatus {
-      google.protobuf.StringValue state = 1;
-      google.protobuf.Timestamp updated_on = 2;
-
-      message Repository {
-        google.protobuf.StringValue full_name = 1;
+    message QueryParams {
+      message Metadata {
+        repeated google.protobuf.StringValue application_name = 1;
+        repeated google.protobuf.StringValue subsystem_name = 2;
       }
 
-      Repository repository = 3;
-      google.protobuf.StringValue url = 4;
-    }
-    CommitStatus commit_status = 1;
+      Metadata metadata = 1;
 
-    message Repository {
-      message Links {
-        message Avatar {
-          google.protobuf.StringValue href = 1;
-        }
-        Avatar avatar = 1;
+      message SortModel {
+        google.protobuf.StringValue field = 1;
+        google.protobuf.StringValue ordering = 2;
+        google.protobuf.StringValue missing = 3;
       }
-      Links links = 1;
+
+      repeated SortModel sort_model = 2;
     }
 
-    Repository repository = 2;
+    QueryParams query_params = 6;
   }
 
-  BitbucketBody body = 4;
-  google.protobuf.StringValue request_body = 5;
+  QueryDef query_def = 1;
 }
 
-message CreateTfsTagRequest {
-  google.protobuf.StringValue name = 1;
-  repeated google.protobuf.StringValue application = 2;
-  repeated  google.protobuf.StringValue subsystem = 3;
-
-  message TfsBody {
-    message Resource {
-      google.protobuf.StringValue status = 1;
-
-      message Environment {
-        google.protobuf.StringValue status = 1;
-        google.protobuf.StringValue source_branch = 2;
-
-      }
-      Environment environment = 2;
-      google.protobuf.Timestamp finish_time = 3;
-    }
-    Resource resource = 1;
-    google.protobuf.Timestamp created_date = 2;
-
-  }
-
-  TfsBody body = 4;
-  google.protobuf.StringValue request_body = 5;
+message UpdateTagRequest {
+  Tag tag = 1;
 }
 
-message CreateGitlabTagRequest {
-  google.protobuf.StringValue name = 1;
-  repeated google.protobuf.StringValue application = 2;
-  repeated  google.protobuf.StringValue subsystem = 3;
-
-  message GitlabBody {
-    message ObjectAttributes {
-      google.protobuf.StringValue status = 1;
-      google.protobuf.Timestamp finished_at = 2;
-      google.protobuf.StringValue ref = 3;
-    }
-    ObjectAttributes object_attributes = 1;
-
-    message Project {
-      google.protobuf.StringValue name = 1;
-      google.protobuf.StringValue git_http_url = 2;
-    }
-
-    Project project = 2;
-  };
-
-  GitlabBody body = 4;
-  google.protobuf.StringValue request_body = 5;
+message Query {
+  repeated google.protobuf.StringValue application_name = 1;
+  google.protobuf.Timestamp end_time = 2;
+  google.protobuf.Timestamp start_time = 3;
+  repeated google.protobuf.StringValue subsystem_name = 4;
+  google.protobuf.Int64Value step = 5;
 }
 
+message DeleteTagRequest {
+  google.protobuf.UInt64Value id = 1;
+}
+
+message GetTagSummaryRequest {
+  Query compare_tag = 1;
+  Query tag = 2;
+}
+
+message GetTagAlertsRequest {
+  Query compare_tag = 1;
+  Query tag = 2;
+}
+
+message GetTagErrorVolumeRequest {
+  Query compare_tag = 1;
+  Query tag = 2;
+}
 
 message CreateTagResponse {
   Tag tag = 1;
 }
 
-message CreateGitlabTagResponse {
+message GetTagsResponse {
+  repeated Tag data = 1;
+}
+
+message UpdateTagResponse {
   Tag tag = 1;
 }
 
-message CreateTfsTagResponse {
-  Tag tag = 1;
+message DeleteTagResponse {
+  google.protobuf.StringValue response = 1;
 }
 
-message CreateBitbucketTagResponse {
-  Tag tag = 1;
+
+message GetTagSummaryResponse  {
+  message Summary {
+    google.protobuf.DoubleValue tag_result = 1;
+    google.protobuf.DoubleValue compare_result = 2;
+    google.protobuf.StringValue link_cache_id = 3;
+    google.protobuf.StringValue type = 4;
+  }
+
+  repeated Summary data = 1;
+}
+
+message GraphPoint {
+  google.protobuf.Timestamp timestamp = 1;
+  google.protobuf.Int32Value value = 2;
+}
+
+message GetTagAlertsResponse  {
+  message AlertInfo {
+    google.protobuf.StringValue name = 1;
+    google.protobuf.Int32Value severity = 2;
+    google.protobuf.Int32Value size = 3;
+  }
+
+  repeated AlertInfo alerts_list_info = 1;
+
+  message SeverityInfo {
+    google.protobuf.Int32Value severity = 1;
+    google.protobuf.Int32Value size = 2;
+  }
+
+  repeated SeverityInfo severity_info = 2;
+
+  message VolumeCompareGraph {
+    repeated GraphPoint compare_tag = 1;
+    repeated GraphPoint tag = 2;
+  }
+
+  VolumeCompareGraph volume_compare_graph = 3;
+}
+
+
+
+message GetTagErrorVolumeResponse  {
+  repeated GraphPoint compare_tag = 1;
+  repeated GraphPoint tag = 2;
 }
