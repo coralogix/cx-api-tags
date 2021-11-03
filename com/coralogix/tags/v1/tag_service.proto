@@ -25,7 +25,6 @@ service TagsService {
     option (google.api.http) = {
       post: "/api/v1/tag"
       body: "body"
-      response_body: "tags"
     };
   }
 
