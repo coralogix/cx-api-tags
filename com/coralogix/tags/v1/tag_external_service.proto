@@ -1,27 +1,21 @@
 syntax = "proto3";
 
-package com.coralogix.tags.v1beta1;
+package com.coralogix.tags.v1;
 
 import "google/protobuf/wrappers.proto";
 
-import "com/coralogix/tags/v1beta1/tag.proto";
+import "com/coralogix/tags/v1/tag.proto";
+import "com/coralogix/tags/v1/audit_log.proto";
 import "google/protobuf/descriptor.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/struct.proto";
 
 
-message AuditLogDescription {
-  optional string description = 1;
-}
 
-extend google.protobuf.MethodOptions {
-  optional AuditLogDescription audit_log_description = 5000;
-}
-
-service TagService {
-  rpc CreateTag(CreateTagRequest) returns (CreateTagResponse) {
-    option (audit_log_description).description = "create tag";
+service TagsExternalService {
+  rpc CreateExternalTag(CreateExternalTagRequest) returns (CreateExternalTagResponse) {
+    option (audit_log_description).description = "create external tag";
     option (google.api.http) = {
       get: "/api/v1/external/tags/add"
       additional_bindings {
@@ -31,7 +25,7 @@ service TagService {
     };
   }
   rpc CreateBitbucketTag(CreateBitbucketTagRequest) returns (CreateBitbucketTagResponse) {
-    option (audit_log_description).description = "create bitbucket tag";
+    option (audit_log_description).description = "create external bitbucket tag";
     option (google.api.http) = {
       post: "/api/v1/external/bitbucket"
       body: "body"
@@ -39,7 +33,7 @@ service TagService {
     };
   }
   rpc CreateTfsTag(CreateTfsTagRequest) returns (CreateTfsTagResponse) {
-    option (audit_log_description).description = "create tfs tag";
+    option (audit_log_description).description = "create external tfs tag";
     option (google.api.http) = {
       post: "/api/v1/external/tfs"
       body: "body"
@@ -47,7 +41,7 @@ service TagService {
     };
   }
   rpc CreateGitlabTag(CreateGitlabTagRequest) returns (CreateGitlabTagResponse) {
-    option (audit_log_description).description = "create gitlab tag";
+    option (audit_log_description).description = "create external gitlab tag";
     option (google.api.http) = {
       post: "/api/v1/external/gitlab"
       body: "body"
@@ -56,7 +50,7 @@ service TagService {
   }
 }
 
-message CreateTagRequest {
+message CreateExternalTagRequest {
   google.protobuf.StringValue name = 1;
   google.protobuf.StringValue key = 2;
   repeated google.protobuf.StringValue application = 3;
@@ -175,8 +169,7 @@ message CreateGitlabTagRequest {
   google.protobuf.Struct body = 4;
 }
 
-
-message CreateTagResponse {
+message CreateExternalTagResponse {
   Tag tag = 1;
 }
 
