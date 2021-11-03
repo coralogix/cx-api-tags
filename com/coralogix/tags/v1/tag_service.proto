@@ -24,7 +24,7 @@ service TagsService {
     option (audit_log_description).description = "get tags";
     option (google.api.http) = {
       post: "/api/v1/tag"
-      body: "body"
+      body: "*"
     };
   }
 
@@ -49,7 +49,7 @@ service TagsService {
     option (audit_log_description).description = "get tag summary";
     option (google.api.http) = {
       post: "/api/v1/tag/summary"
-      response_body: "response"
+      body: "*"
     };
   }
 
@@ -57,7 +57,7 @@ service TagsService {
     option (audit_log_description).description = "get tag alerts";
     option (google.api.http) = {
       post: "/api/v1/tag/alerts"
-      response_body: "response"
+      body: "*"
     };
   }
 
@@ -65,75 +65,78 @@ service TagsService {
     option (audit_log_description).description = "get tag error volume";
     option (google.api.http) = {
       post: "/api/v1/tag/error-volume"
-      response_body: "response"
+      body: "*"
     };
   }
 }
 
 message CreateTagRequest {
-  Tag tag = 1;
+  google.protobuf.StringValue key = 1;
+  google.protobuf.StringValue name = 2;
+  google.protobuf.UInt32Value company_id = 3;
+  google.protobuf.StringValue icon_url = 4;
+  google.protobuf.Timestamp timestamp = 5;
+  repeated google.protobuf.StringValue application = 8;
+  repeated  google.protobuf.StringValue subsystem = 9;
 }
 
 message GetTagsRequest {
-  message Query {
+  message QueryDef {
     google.protobuf.Timestamp start_date = 1;
     google.protobuf.Timestamp end_date = 2;
     google.protobuf.UInt32Value page_index = 3;
     google.protobuf.UInt32Value page_size = 4;
-    google.protobuf.StringValue type = 5;
 
     message QueryParams {
+      message Metadata {
+        repeated google.protobuf.StringValue application_name = 1;
+        repeated google.protobuf.StringValue subsystem_name = 2;
+      }
+
+      Metadata metadata = 1;
+
       message SortModel {
         google.protobuf.StringValue field = 1;
         google.protobuf.StringValue ordering = 2;
         google.protobuf.StringValue missing = 3;
       }
+
+      repeated SortModel sort_model = 2;
     }
+
+    QueryParams query_params = 6;
   }
+
+  QueryDef query_def = 1;
 }
 
 message UpdateTagRequest {
   Tag tag = 1;
 }
 
+message Query {
+  repeated google.protobuf.StringValue application_name = 1;
+  google.protobuf.Timestamp end_time = 2;
+  google.protobuf.Timestamp start_time = 3;
+  repeated google.protobuf.StringValue subsystem_name = 4;
+  google.protobuf.Int64Value step = 5;
+}
+
 message DeleteTagRequest {
-  google.protobuf.StringValue id = 1;
+  google.protobuf.UInt64Value id = 1;
 }
 
 message GetTagSummaryRequest {
-  message Query {
-    repeated google.protobuf.StringValue application_name = 1;
-    google.protobuf.Timestamp end_time = 2;
-    google.protobuf.Timestamp start_time = 3;
-    repeated google.protobuf.StringValue subsystem_name = 4;
-  }
-
   Query compare_tag = 1;
   Query tag = 2;
 }
 
 message GetTagAlertsRequest {
-  message Query {
-    repeated google.protobuf.StringValue application_name = 1;
-    google.protobuf.Timestamp end_time = 2;
-    google.protobuf.Timestamp start_time = 3;
-    repeated google.protobuf.StringValue subsystem_name = 4;
-    google.protobuf.Int64Value step = 5;
-  }
-
   Query compare_tag = 1;
   Query tag = 2;
 }
 
 message GetTagErrorVolumeRequest {
-  message Query {
-    repeated google.protobuf.StringValue application_name = 1;
-    google.protobuf.Timestamp end_time = 2;
-    google.protobuf.Timestamp start_time = 3;
-    repeated google.protobuf.StringValue subsystem_name = 4;
-    google.protobuf.Int64Value step = 5;
-  }
-
   Query compare_tag = 1;
   Query tag = 2;
 }
@@ -157,9 +160,9 @@ message DeleteTagResponse {
 
 message GetTagSummaryResponse  {
   message Summary {
-    google.protobuf.Int32Value compare_result = 1;
-    google.protobuf.StringValue link_cache_id = 2;
-    google.protobuf.Int32Value tag_result = 3;
+    google.protobuf.DoubleValue tag_result = 1;
+    google.protobuf.DoubleValue compare_result = 2;
+    google.protobuf.StringValue link_cache_id = 3;
     google.protobuf.StringValue type = 4;
   }
 
@@ -185,7 +188,7 @@ message GetTagAlertsResponse  {
   message VolumeCompareGraph {
     message GraphPoint {
       google.protobuf.Timestamp timestamp = 1;
-      google.protobuf.Int64Value count = 2;
+      google.protobuf.Int32Value count = 2;
     }
     repeated GraphPoint compare_tag = 1;
     repeated GraphPoint tag = 2;
