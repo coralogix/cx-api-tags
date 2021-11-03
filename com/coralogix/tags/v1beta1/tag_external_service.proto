@@ -1,11 +1,11 @@
 syntax = "proto3";
 
-package com.coralogix.tags.v1;
+package com.coralogix.tags.v1beta1;
 
 import "google/protobuf/wrappers.proto";
 
-import "com/coralogix/tags/v1/tag.proto";
-import "com/coralogix/tags/v1/audit_log.proto";
+import "com/coralogix/tags/v1beta1/tag.proto";
+import "com/coralogix/tags/v1beta1/audit_log.proto";
 import "google/protobuf/descriptor.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
