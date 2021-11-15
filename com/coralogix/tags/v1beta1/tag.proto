@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package com.coralogix.tags.v1;
+package com.coralogix.tags.v1beta1;
 
 import "google/protobuf/wrappers.proto";
 import "google/protobuf/timestamp.proto";
-import "com/coralogix/tags/v1/tag_type.proto";
+import "com/coralogix/tags/v1beta1/tag_type.proto";
 
 enum Status {
   STATUS_UNSPECIFIED = 0;
@@ -12,10 +12,10 @@ enum Status {
 }
 
 message Tag {
-  google.protobuf.Int64Value id = 1;
+  google.protobuf.UInt64Value id = 1;
   google.protobuf.StringValue key = 2;
   google.protobuf.StringValue name = 3;
-  google.protobuf.Int64Value company_id = 4;
+  google.protobuf.UInt32Value company_id = 4;
   Status status = 5;
   google.protobuf.StringValue icon_url= 6;
   google.protobuf.Timestamp timestamp = 7;

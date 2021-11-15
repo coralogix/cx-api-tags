@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package com.coralogix.tags.v1;
+package com.coralogix.tags.v1beta1;
 
 import "google/protobuf/descriptor.proto";
 
