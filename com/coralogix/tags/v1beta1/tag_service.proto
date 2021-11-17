@@ -169,6 +169,11 @@ message GetTagSummaryResponse  {
   repeated Summary data = 1;
 }
 
+message GraphPoint {
+  google.protobuf.Timestamp timestamp = 1;
+  google.protobuf.Int32Value value = 2;
+}
+
 message GetTagAlertsResponse  {
   message AlertInfo {
     google.protobuf.StringValue name = 1;
@@ -186,10 +191,6 @@ message GetTagAlertsResponse  {
   repeated SeverityInfo severity_info = 2;
 
   message VolumeCompareGraph {
-    message GraphPoint {
-      google.protobuf.Timestamp timestamp = 1;
-      google.protobuf.Int32Value count = 2;
-    }
     repeated GraphPoint compare_tag = 1;
     repeated GraphPoint tag = 2;
   }
@@ -197,12 +198,9 @@ message GetTagAlertsResponse  {
   VolumeCompareGraph volume_compare_graph = 3;
 }
 
-message GetTagErrorVolumeResponse  {
-  message ErrorVolumePoint {
-    google.protobuf.Timestamp timestamp = 1;
-    google.protobuf.Int64Value severities = 2;
-  }
 
-  repeated ErrorVolumePoint compare_tag = 1;
-  repeated ErrorVolumePoint tag = 2;
+
+message GetTagErrorVolumeResponse  {
+  repeated GraphPoint compare_tag = 1;
+  repeated GraphPoint tag = 2;
 }
