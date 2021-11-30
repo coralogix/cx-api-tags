@@ -30,6 +30,10 @@ service TagsExternalService {
       post: "/api/v1/external/bitbucket"
       body: "body"
       response_body: "response"
+      additional_bindings {
+        post: "/api/v1/external/bitbucket/*"
+        body: "*"
+      }
     };
   }
   rpc CreateTfsTag(CreateTfsTagRequest) returns (CreateTfsTagResponse) {
