@@ -75,7 +75,7 @@ message CreateTagRequest {
   google.protobuf.StringValue name = 2;
   google.protobuf.UInt32Value company_id = 3;
   google.protobuf.StringValue icon_url = 4;
-  google.protobuf.Timestamp timestamp = 5;
+  google.protobuf.UInt64Value timestamp = 5;
   repeated google.protobuf.StringValue application = 8;
   repeated  google.protobuf.StringValue subsystem = 9;
 }

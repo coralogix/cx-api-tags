@@ -60,7 +60,7 @@ message CreateExternalTagRequest {
   repeated google.protobuf.StringValue application = 3;
   repeated  google.protobuf.StringValue subsystem = 4;
   google.protobuf.StringValue icon_url = 5;
-  google.protobuf.Timestamp timestamp = 6;
+  google.protobuf.UInt64Value timestamp = 6;
 }
 
 message CreateBitbucketTagRequest {
