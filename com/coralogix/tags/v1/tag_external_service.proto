@@ -17,13 +17,18 @@ service TagsExternalService {
   rpc CreateExternalTag(CreateExternalTagRequest) returns (CreateExternalTagResponse) {
     option (audit_log_description).description = "create external tag";
     option (google.api.http) = {
-      get: "/api/v1/external/tags/add"
-      additional_bindings {
-        post: "/api/v1/external/tags/"
-        body: "*"
-      }
+      post: "/api/v1/external/tags/"
+      body: "*"
     };
   }
+
+  rpc AddExternalTag(AddExternalTagRequest) returns (AddExternalTagResponse) {
+    option (audit_log_description).description = "add external tag with get";
+    option (google.api.http) = {
+      get: "/api/v1/external/tags/add"
+    };
+  }
+
   rpc CreateBitbucketTag(CreateBitbucketTagRequest) returns (CreateBitbucketTagResponse) {
     option (audit_log_description).description = "create external bitbucket tag";
     option (google.api.http) = {
@@ -32,7 +37,8 @@ service TagsExternalService {
       response_body: "response"
       additional_bindings {
         post: "/api/v1/external/bitbucket/*"
-        body: "*"
+        body: "body"
+        response_body: "response"
       }
     };
   }
@@ -61,6 +67,15 @@ message CreateExternalTagRequest {
   repeated  google.protobuf.StringValue subsystem = 4;
   google.protobuf.StringValue icon_url = 5;
   google.protobuf.Timestamp timestamp = 6;
+}
+
+message AddExternalTagRequest {
+  google.protobuf.StringValue name = 1;
+  google.protobuf.StringValue key = 2;
+  repeated google.protobuf.StringValue application = 3;
+  repeated  google.protobuf.StringValue subsystem = 4;
+  google.protobuf.StringValue icon_url = 5;
+  google.protobuf.StringValue timestamp = 6;
 }
 
 message CreateBitbucketTagRequest {
@@ -174,6 +189,10 @@ message CreateGitlabTagRequest {
 }
 
 message CreateExternalTagResponse {
+  Tag tag = 1;
+}
+
+message AddExternalTagResponse {
   Tag tag = 1;
 }
 
