@@ -32,7 +32,8 @@ service TagsExternalService {
       response_body: "response"
       additional_bindings {
         post: "/api/v1/external/bitbucket/*"
-        body: "*"
+        body: "body"
+        response_body: "response"
       }
     };
   }
