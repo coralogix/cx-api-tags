@@ -13,4 +13,4 @@ jobs:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           event-type: protobuf_update
           repository: coralogix/coralogix-sdk
-          client-payload: '{"repo": "${{ github.repository }}", "version": "${{ github.ref_name }}"}'
+          client-payload: '{"repo": "${{ github.repository }}", "version": "${{ github.ref_name }}", "creator": "${{ github.actor }}"}'
