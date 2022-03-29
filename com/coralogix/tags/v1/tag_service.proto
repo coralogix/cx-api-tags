@@ -15,8 +15,18 @@ service TagsService {
     option (audit_log_description).description = "create tag";
     option (google.api.http) = {
       post: "/api/v1/addtag"
-      body: "*",
+      body: "*"
       response_body: "tag"
+      additional_bindings: [
+        {
+          get: "/api/v1/addTag"
+          response_body: "tag"
+        },
+        {
+          post: "/api/v1/addTag"
+          body: "*"
+          response_body: "tag"
+        }]
     };
   }
 
