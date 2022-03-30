@@ -17,16 +17,6 @@ service TagsService {
       post: "/api/v1/addtag"
       body: "*"
       response_body: "tag"
-      additional_bindings: [
-        {
-          get: "/api/v1/addTag"
-          response_body: "tag"
-        },
-        {
-          post: "/api/v1/addTag"
-          body: "*"
-          response_body: "tag"
-        }]
     };
   }
 

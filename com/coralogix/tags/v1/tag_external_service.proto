@@ -26,6 +26,15 @@ service TagsExternalService {
     option (audit_log_description).description = "add external tag with get";
     option (google.api.http) = {
       get: "/api/v1/external/tags/add"
+      additional_bindings: [
+        {
+          get: "/api/v1/addTag"
+          response_body: "tag"
+        },
+        {
+          post: "/api/v1/addTag"
+          response_body: "tag"
+        }]
     };
   }
 
