@@ -5,6 +5,7 @@ package com.coralogix.tags.v1;
 import "google/protobuf/wrappers.proto";
 
 import "com/coralogix/tags/v1/tag.proto";
+import "com/coralogix/tags/v1/tag_type.proto";
 import "com/coralogix/tags/v1/audit_log.proto";
 import "google/protobuf/descriptor.proto";
 import "google/api/annotations.proto";
@@ -76,6 +77,7 @@ message CreateExternalTagRequest {
   repeated  google.protobuf.StringValue subsystem = 4;
   google.protobuf.StringValue icon_url = 5;
   google.protobuf.Timestamp timestamp = 6;
+  Type type = 7;
 }
 
 message AddExternalTagRequest {
@@ -85,6 +87,7 @@ message AddExternalTagRequest {
   repeated  google.protobuf.StringValue subsystem = 4;
   google.protobuf.StringValue icon_url = 5;
   google.protobuf.StringValue timestamp = 6;
+  Type type = 7;
 }
 
 message CreateBitbucketTagRequest {
