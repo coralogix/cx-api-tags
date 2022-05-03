@@ -34,6 +34,7 @@ service TagsExternalService {
         },
         {
           post: "/api/v1/addTag"
+          body: "*"
           response_body: "tag"
         }]
     };
