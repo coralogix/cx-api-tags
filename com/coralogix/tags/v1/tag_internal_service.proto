@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package com.coralogix.tags.v1;
+
+import "google/protobuf/wrappers.proto";
+
+import "com/coralogix/tags/v1/tag.proto";
+import "com/coralogix/tags/v1/tag_type.proto";
+import "com/coralogix/tags/v1/audit_log.proto";
+import "google/protobuf/descriptor.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+service TagsInternalService {
+  rpc AddInternalTag(AddInternalTagRequest) returns (AddInternalTagResponse) {
+    option (audit_log_description).description = "add internal tag with get";
+    option (google.api.http) = {
+          post: "/api/v1/internal/addTag"
+          body: "*"
+          response_body: "tag"
+       };
+  }
+}
+
+
+message AddInternalTagRequest {
+  google.protobuf.StringValue name = 1;
+  google.protobuf.StringValue key = 2;
+  repeated google.protobuf.StringValue application = 3;
+  repeated  google.protobuf.StringValue subsystem = 4;
+  google.protobuf.StringValue icon_url = 5;
+  google.protobuf.StringValue timestamp = 6;
+  Type type = 7;
+  google.protobuf.StringValue companyId = 8;
+
+}
+
+message AddInternalTagResponse {
+  Tag tag = 1;
+}
