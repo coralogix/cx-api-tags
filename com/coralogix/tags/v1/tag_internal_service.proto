@@ -33,7 +33,7 @@ message AddInternalTagRequest {
   google.protobuf.Timestamp timestamp = 6;
   Type type = 7;
   google.protobuf.UInt32Value companyId = 8;
-
+  google.protobuf.StringValue link = 9;
 }
 
 message AddInternalTagResponse {
