@@ -3,6 +3,7 @@ syntax = "proto3";
 package com.coralogix.tags.v2;
 
 import "com/coralogix/tags/v2/tag.proto";
+import "google/protobuf/wrappers.proto";
 
 service TagsService {
   rpc GetTag(GetTagRequest) returns (GetTagResponse) {}
