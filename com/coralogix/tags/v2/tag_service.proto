@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package com.coralogix.tags.v2;
+
+import "com/coralogix/tags/v2/tag.proto";
+
+service TagsService {
+  rpc GetTag(GetTagRequest) returns (GetTagResponse) {}
+  rpc CreateTag(CreateTagRequest) returns (CreateTagResponse) {}
+  rpc UpdateTag(UpdateTagRequest) returns (UpdateTagResponse) {}
+  rpc DeleteTag(DeleteTagRequest) returns (DeleteTagResponse) {}
+}
+
+message GetTagRequest {
+  string tag_id = 1;
+}
+
+message GetTagResponse {
+  Tag tag = 1;
+}
+
+message CreateTagRequest {
+  Tag.UserDefined tag = 1;
+}
+
+message CreateTagResponse {
+  Tag tag = 1;
+}
+
+message UpdateTagRequest {
+  Tag tag = 1;
+}
+
+message UpdateTagResponse {
+  Tag tag = 1;
+}
+
+message DeleteTagRequest {
+  google.protobuf.StringValue id = 1;
+}
+
+message DeleteTagResponse {}
