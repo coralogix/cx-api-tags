@@ -13,7 +13,7 @@ service TagsService {
 }
 
 message GetTagRequest {
-  string tag_id = 1;
+  google.protobuf.UInt64Value tag_id = 1;
 }
 
 message GetTagResponse {
@@ -37,7 +37,7 @@ message UpdateTagResponse {
 }
 
 message DeleteTagRequest {
-  google.protobuf.StringValue id = 1;
+  google.protobuf.UInt64Value tag_id = 1;
 }
 
 message DeleteTagResponse {}
