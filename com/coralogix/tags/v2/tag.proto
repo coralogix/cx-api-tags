@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package com.coralogix.tags.v2;
+
+import "google/protobuf/wrappers.proto";
+
+import "google/protobuf/descriptor.proto";
+import "google/protobuf/timestamp.proto";
+import "com/coralogix/v1/annotations.proto";
+
+message Tag {
+  option (com.coralogix.v1.cx_gen_message) = {resource: true};
+
+  message UserDefined {
+    google.protobuf.StringValue key = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue icon_url = 4;
+    google.protobuf.UInt64Value timestamp = 5;
+    repeated google.protobuf.StringValue application = 6;
+    repeated  google.protobuf.StringValue subsystem = 7;
+  }
+
+  message ServerGenerated {
+    google.protobuf.UInt64Value id = 1;
+  }
+
+  UserDefined user_defined = 1;
+  ServerGenerated server_generated = 2;
+}

@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package com.coralogix.tags.v2;
+
+import "com/coralogix/tags/v2/audit_log.proto";
+import "com/coralogix/tags/v2/tag.proto";
+import "google/protobuf/wrappers.proto";
+
+service TagsService {
+  rpc GetTag(GetTagRequest) returns (GetTagResponse) {
+    option (audit_log_description).description = "get tag";
+  }
+  rpc CreateTag(CreateTagRequest) returns (CreateTagResponse) {
+    option (audit_log_description).description = "create tag";
+  }
+  rpc UpdateTag(UpdateTagRequest) returns (UpdateTagResponse) {
+    option (audit_log_description).description = "update tag";
+  }
+  rpc DeleteTag(DeleteTagRequest) returns (DeleteTagResponse) {
+    option (audit_log_description).description = "delete tag";
+  }
+}
+
+message GetTagRequest {
+  google.protobuf.UInt64Value tag_id = 1;
+}
+
+message GetTagResponse {
+  Tag tag = 1;
+}
+
+message CreateTagRequest {
+  Tag.UserDefined tag = 1;
+}
+
+message CreateTagResponse {
+  Tag tag = 1;
+}
+
+message UpdateTagRequest {
+  Tag tag = 1;
+}
+
+message UpdateTagResponse {
+  Tag tag = 1;
+}
+
+message DeleteTagRequest {
+  google.protobuf.UInt64Value tag_id = 1;
+}
+
+message DeleteTagResponse {}
