@@ -46,7 +46,7 @@ service TagsService {
       body: "*"
 
       additional_bindings: {
-        post: "/v1/tags/query"
+        post: "/v1/tags/query/run"
         body: "*"
       }
     };
