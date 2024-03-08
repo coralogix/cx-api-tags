@@ -9,14 +9,33 @@ import "com/coralogix/tags/v1/audit_log.proto";
 import "google/protobuf/descriptor.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
+import "com/coralogix/openapi/v1/annotations.proto";
 
 service TagsService {
+  option (com.coralogix.openapi.v1.service) = {
+    description: "Tags service"
+    resource_name: "Tag"
+  };
   rpc CreateTag(CreateTagRequest) returns (CreateTagResponse) {
     option (audit_log_description).description = "create tag";
     option (google.api.http) = {
       post: "/api/v1/addtag"
       body: "*"
       response_body: "tag"
+
+      additional_bindings: {
+        post: "/v1/tags"
+        body: "*"
+        response_body: "tag"
+      }
+    };
+    option (com.coralogix.openapi.v1.method) = {
+      http_rule_index: 1
+      resource: true
+      description: "Create a new tag"
+      extensions: [
+        {key: "x-codegen-request-body-name" value: "TagPrototype"}
+      ]
     };
   }
 
@@ -25,6 +44,16 @@ service TagsService {
     option (google.api.http) = {
       post: "/api/v1/tag"
       body: "*"
+
+      additional_bindings: {
+        post: "/v1/tags/query/run"
+        body: "*"
+      }
+    };
+    option (com.coralogix.openapi.v1.method) = {
+      http_rule_index: 1
+      datasource: true
+      description: "Query tags"
     };
   }
 
@@ -34,6 +63,22 @@ service TagsService {
       post: "/api/v1/edittag"
       body: "tag"
       response_body: "tag"
+
+      additional_bindings: {
+        put: "/v1/tags/{tag.id}"
+        body: "tag"
+        response_body: "tag"
+      }
+    };
+    option (com.coralogix.openapi.v1.method) = {
+      http_rule_index: 1
+      resource: true
+      description: "Update tag"
+      request_schema: "TagPrototype"
+      path_parameter_name: "id"
+      extensions: [
+        {key: "x-codegen-request-body-name" value: "TagPrototype"}
+      ]
     };
   }
 
@@ -42,6 +87,14 @@ service TagsService {
     option (google.api.http) = {
       delete: "/api/v1/deletetag/{id}"
       response_body: "response"
+      additional_bindings: {
+        delete: "/v1/tags/{id}"
+      }
+    };
+    option (com.coralogix.openapi.v1.method) = {
+      http_rule_index: 1
+      resource: true
+      description: "Delete tag"
     };
   }
 
@@ -71,6 +124,11 @@ service TagsService {
 }
 
 message CreateTagRequest {
+  option (com.coralogix.openapi.v1.message) = {
+    name: "TagPrototype"
+    description: "Tag to create"
+  };
+
   google.protobuf.StringValue key = 1;
   google.protobuf.StringValue name = 2;
   google.protobuf.UInt32Value company_id = 3;
